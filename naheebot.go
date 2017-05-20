@@ -1,20 +1,25 @@
 package main
 
 import (
-	"os"
 	"fmt"
 	"strings"
 	"github.com/nlopes/slack"
+	"github.com/jinzhu/configor"
 )
 
-const BOT_ID = "U5FV0RATF"
-const AT_BOT = "<@" + BOT_ID + ">"
+//const BOT_ID = "U5FV0RATF"
+//const AT_BOT = "<@" + BOT_ID + ">"
 var api *slack.Client
 
+var Config = struct {
+	Token string
+}{}
+
 func main()  {
-	fmt.Printf("token: %s", os.Getenv("xoxb-185986860933-8Heehy7rurZMRi0smbK7XaVl"))
-	api = slack.New("xoxb-185986860933-8Heehy7rurZMRi0smbK7XaVl")
-	fmt.Printf("Started")
+	configor.Load(&Config, "config.yml")
+	api = slack.New(Config.Token)
+	fmt.Print("Started\n")
+
 	rtm := api.NewRTM()
 	go rtm.ManageConnection()
 
@@ -41,8 +46,4 @@ func handleCommand(cmd string, channel string)  {
 	}
 
 	fmt.Printf("Message was sent to %s", channelId)
-}
-
-func parseOutput()  {
-
 }
