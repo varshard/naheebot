@@ -1,12 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"github.com/nlopes/slack"
 	"strings"
 )
 
-func parse(msg string, channel string) {
+func parse(msg string) string {
 	var response string
 	if strings.HasPrefix(msg, "Hello") {
 		response = "World"
@@ -14,12 +12,5 @@ func parse(msg string, channel string) {
 		response = remindMe(msg)
 	}
 
-	channelId, _, err := api.PostMessage(channel, response, slack.PostMessageParameters{})
-
-	if err != nil {
-		fmt.Printf("%s\n", err)
-		return
-	}
-
-	fmt.Printf("Message was sent to %s\n", channelId)
+	return response
 }

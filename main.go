@@ -27,7 +27,8 @@ func main() {
 		case *slack.MessageEvent:
 			//TODO: prevent bot's message triggering the event
 			fmt.Printf("Message: %s, at %s\n", evn.Text, evn.Channel)
-			parse(evn.Text, evn.Channel)
+			response := parse(evn.Text)
+			rtm.SendMessage(rtm.NewOutgoingMessage(response, evn.Channel))
 		}
 	}
 }
