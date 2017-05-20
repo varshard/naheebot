@@ -6,7 +6,7 @@ import (
 	"github.com/nlopes/slack"
 )
 
-//const BOT_ID = "U5FV0RATF"
+const BOT_ID = "U5FV0RATF"
 //const AT_BOT = "<@" + BOT_ID + ">"
 var api *slack.Client
 
@@ -26,9 +26,12 @@ func main() {
 		switch evn := msg.Data.(type) {
 		case *slack.MessageEvent:
 			//TODO: prevent bot's message triggering the event
-			fmt.Printf("Message: %s, at %s\n", evn.Text, evn.Channel)
-			response := parse(evn.Text)
-			rtm.SendMessage(rtm.NewOutgoingMessage(response, evn.Channel))
+			//fmt.Printf("Message: %s, %s, %s\n", evn.Text, evn.Channel, evn.User == BOT_ID)
+			if evn.User != BOT_ID {
+				response := parse(evn.Text)
+				fmt.Printf("response: %s\n", response)
+				rtm.SendMessage(rtm.NewOutgoingMessage(response, evn.Channel))
+			}
 		}
 	}
 }
